@@ -211,6 +211,7 @@ class JumpPrime
         else
         {
             // Revive makes the object permanently irreparable (i.e., Broken)
+            _isRunning = false;
             _isBroken = true;
         }
 
@@ -257,7 +258,7 @@ class JumpPrime
     }
 
     /// <summary>
-    /// IsDeactivated returns whether or not the <c>JumpPrime</c> object has been
+    /// IsActive returns whether or not the <c>JumpPrime</c> object has been
     /// deactivated due to excessive jumps.
     /// </summary>
     /// <returns><c>true</c> if the <c>JumpPrime</c> object is currently active,

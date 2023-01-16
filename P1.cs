@@ -7,7 +7,7 @@ class P1
     public static void Main(string[] args)
     {
 
-        JumpPrime myObj = new JumpPrime(4389);
+        JumpPrime myObj = new JumpPrime(2488);
 
         while (myObj.IsActive())
         {
