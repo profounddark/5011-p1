@@ -18,6 +18,26 @@ class P1
         Console.WriteLine("myObj.up() = " + myObj.up());
         Console.WriteLine("myObj.down() = " + myObj.down());
 
+        Console.WriteLine("myObj is active: " + myObj.IsActive());
+
+        Console.WriteLine("Reviving myObj: " + (myObj.Revive() ? "Successful" : "Failed"));
+        Console.WriteLine("myObj is active: " + myObj.IsActive());
+
+
+        while (myObj.IsActive())
+        {
+            Console.WriteLine("myObj.up() = " + myObj.up());
+            Console.WriteLine("myObj.up() = " + myObj.up());
+            Console.WriteLine("myObj.down() = " + myObj.down());
+        }
+
+        Console.WriteLine("myObj.up() = " + myObj.up());
+        Console.WriteLine("myObj.down() = " + myObj.down());
+        Console.WriteLine("myObj is active: " + myObj.IsActive());
+
+
+
+
 
 
 
