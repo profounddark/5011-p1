@@ -188,12 +188,17 @@ class JumpPrime
     {
         if (_isRunning)
         {
+            uint returnValue = _upperPrime;
+
+            _queryCount++;
+
             if (_queryCount >= _queryLimit)
             {
-                _jumpNumber(DefaultJumpValue);
+                int jumpValue = -2 * (int)(_mainNumber - _lowerPrime);
+                _jumpNumber(jumpValue);
             }
-            _queryCount++;
-            return _upperPrime;
+
+            return returnValue;
         }
         return 0;
     }
@@ -210,13 +215,17 @@ class JumpPrime
     {
         if (_isRunning)
         {
-            if (_queryCount >= _queryLimit)
-            {
-                _jumpNumber(-DefaultJumpValue);
-            }
+            uint returnValue = _lowerPrime;
+
             _queryCount++;
 
-            return _lowerPrime;
+            if (_queryCount >= _queryLimit)
+            {
+                int jumpValue = 2 * (int)(_upperPrime - _mainNumber);
+                _jumpNumber(jumpValue);
+            }
+
+            return returnValue;
         }
         return 0;
     }
@@ -304,6 +313,18 @@ class JumpPrime
     public bool IsDeactivated()
     {
         return _isBroken;
+    }
+
+    /// <summary>
+    /// GetCurrentValue returns the current value encapsulated by the <c>JumpPrime</c>
+    /// object. When the object is instantiated (or reset), this is the initial set value.
+    /// After a jump, this is the new jumped-to value.
+    /// </summary>
+    /// <returns>the current value encapsulated by the <c>JumpPrime</c> object.
+    /// </returns>
+    public uint GetCurrentValue()
+    {
+        return _mainNumber;
     }
 
 }
