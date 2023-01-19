@@ -1,6 +1,12 @@
 using System.Diagnostics;
 
+/**
 
+
+*/
+
+
+///
 class JumpPrime
 {
     const uint DefaultJumpBound = 10;
@@ -82,13 +88,14 @@ class JumpPrime
     /// number, <c>_mainNumber</c>, by.</param>
     private void _jumpNumber(int jumpValue)
     {
-
+        // have to typecast
         _mainNumber = (uint)(_mainNumber + jumpValue);
 
         _setPrimeLimits();
         _resetQueryCounter();
 
         _jumpCount++;
+
         // test if at the jump limit and deactivate if necessary
         if (_jumpCount >= _jumpLimit)
         {
@@ -97,6 +104,7 @@ class JumpPrime
 
 
     }
+
 
     /// <summary>
     /// finePrime finds either the next nearest prime number or the previous nearest
@@ -131,6 +139,7 @@ class JumpPrime
     /// Defaults to the class <c>DefaultInitialValue</c> value.</param>
     /// <param name="jumpBound">the bound for how many times the object will jump. Defaults to
     /// the class <c>DefaultJumpBound</c> value.</param>
+    // PRECONDITION: the initial value is at least a four digit prime number
     public JumpPrime(uint initValue = DefaultInitialValue, uint jumpBound = DefaultJumpBound)
     {
         // set that it isn't broken
@@ -196,6 +205,7 @@ class JumpPrime
     /// <returns>
     /// <c>true</c> if the attempt to revive was successful. <c>false</c> otherwise.
     /// </returns>
+    // PRECONDITION: the JumpPrime object is currently inactive.
     public bool Revive()
     {
         // if the class is not running and not broken
@@ -226,6 +236,7 @@ class JumpPrime
     /// <param name="newValue">the new four digit positive integer to be contained
     /// in the <c>JumpPrime</c> object.</param>
     /// <returns><c>true</c> if the reset is successful or <c>false</c> otherwise</returns>
+    // PRECONDITION: the new value is at least a four digit positive integer.
     public bool Reset(uint newValue)
     {
         // object is already broken
