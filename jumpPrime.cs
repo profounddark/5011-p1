@@ -1,20 +1,28 @@
 using System.Diagnostics;
 
-/**
-
-
-*/
-
-
-///
+/// <summary>
+/// The <c>JumpPrime</c> object encapsulates a positive integer that must be at least 4 digits long.
+/// The user can query for the object for the two nearest Prime numbers (either higher or lower).
+/// After a set number of queries (based on the distance between the base integer and
+/// the farther of the two nearest primes), the <c>JumpPrime</c> object will "jump" to a new base number
+/// a set distance from the original number.
+/// New queries as to the nearest prime number will be based on this new number.
+/// 
+/// After a set number of "jumps", the <c>JumpPrime</c> object will deactivate. It can be reactivated,
+/// resetting the base number to the original encapsulated positive integer.
+/// </summary>
 class JumpPrime
 {
+
+    // Important constants.
     const uint DefaultJumpBound = 10;
     const uint DefaultInitialValue = 9999;
     const int DefaultJumpValue = 100;
 
 
+    private uint _initialNumber;
     private uint _mainNumber;
+
     private bool _isRunning;
     private bool _isBroken;
 
@@ -51,7 +59,6 @@ class JumpPrime
     /// setPrimeLimits finds a new upper and lower prime number based
     /// on the established stored number (<c>_mainNumber</c>).
     /// </summary>
-    // PRECONDITION: A new _mainNumber has been set
     private void _setPrimeLimits()
     {
         _upperPrime = _findPrime(_mainNumber);
@@ -142,13 +149,29 @@ class JumpPrime
     // PRECONDITION: the initial value is at least a four digit prime number
     public JumpPrime(uint initValue = DefaultInitialValue, uint jumpBound = DefaultJumpBound)
     {
-        // set that it isn't broken
-        _isBroken = false;
 
-        // sets the bound on number of jumps
-        _jumpLimit = jumpBound;
 
-        this.Reset(initValue);
+        // less than four digits
+        if (initValue < 1000)
+        {
+            _isBroken = true;
+            _isRunning = false;
+        }
+        else
+        {
+            // set that it isn't broken
+            _isBroken = false;
+
+            // sets the bound on number of jumps
+            _jumpLimit = jumpBound;
+
+            // set initial value
+            _initialNumber = initValue;
+
+            // reset the count
+            this.Reset();
+        }
+
 
     }
 
@@ -160,6 +183,7 @@ class JumpPrime
     /// </summary>
     /// <returns>the next highest prime number, unless the <c>JumpPrime</c> object
     /// had been deactivated, in which case it returns 0.</returns>
+    // PRECONDITION: the JumpPrime object is not deactivated
     public uint up()
     {
         if (_isRunning)
@@ -181,6 +205,7 @@ class JumpPrime
     /// </summary>
     /// <returns>the next lowest prime number, unless the <c>JumpPrime</c> object
     /// had been deactivated, in which case it returns 0.</returns>
+    // PRECONDITION: the JumpPrime object is not deactivated
     public uint down()
     {
         if (_isRunning)
@@ -229,15 +254,12 @@ class JumpPrime
     }
 
     /// <summary>
-    /// Reset attempts to reset the <c>JumpPrime</c> object to a new integer value.
-    /// This will fail if the new value is not at least a four digit positive integer
-    /// or if the <c>JumpPrime</c> object was already made irreparable.
+    /// Reset attempts to reset the <c>JumpPrime</c> object to the original integer value.
+    /// This will fail if the <c>JumpPrime</c> object was already made irreparable.
     /// </summary>
-    /// <param name="newValue">the new four digit positive integer to be contained
-    /// in the <c>JumpPrime</c> object.</param>
     /// <returns><c>true</c> if the reset is successful or <c>false</c> otherwise</returns>
-    // PRECONDITION: the new value is at least a four digit positive integer.
-    public bool Reset(uint newValue)
+    // PRECONDITION: the JumpPrime object is not permanently deactivated.
+    public bool Reset()
     {
         // object is already broken
         if (_isBroken)
@@ -245,18 +267,11 @@ class JumpPrime
             return false;
         }
 
-        // new reset value is less than 4 digits
-        else if (newValue < 1000)
-        {
-            _isBroken = true;
-            return false;
-        }
-
         // all other cases, valid object and number
         else
         {
             _isRunning = true;
-            _mainNumber = newValue;
+            _mainNumber = _initialNumber;
 
             _setPrimeLimits();
 
@@ -279,7 +294,16 @@ class JumpPrime
         return _isRunning;
     }
 
-
-
+    /// <summary>
+    /// IsDeactivated returns whether or not the <c>JumpPrime</c> object has
+    /// been permanently deactivated due to improper operation.
+    /// </summary>
+    /// <returns><c>true</c> if the <c>JumpPrime</c> object has been permanently
+    /// deactivated due to inappropriate Revive attempts. <c>false</c> otherwise.
+    /// </returns>
+    public bool IsDeactivated()
+    {
+        return _isBroken;
+    }
 
 }
