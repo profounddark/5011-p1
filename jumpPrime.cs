@@ -1,11 +1,11 @@
 using System.Diagnostics;
 
 /// <summary>
-/// The <c>JumpPrime</c> object encapsulates a positive integer that must be at least 4 digits long.
-/// The user can query for the object for the two nearest Prime numbers (either higher or lower).
+/// The <c>JumpPrime</c> object holds a positive integer that must be at least 4 digits long.
+/// The user can query the object for the two nearest prime numbers: the higher or lower one.
 /// After a set number of queries (based on the distance between the base integer and
-/// the farther of the two nearest primes), the <c>JumpPrime</c> object will "jump" to a new base number
-/// a set distance from the original number.
+/// the farther of the two nearest primes), the <c>JumpPrime</c> object will "jump" to a new base
+/// number a set distance from the original number.
 /// New queries as to the nearest prime number will be based on this new number.
 /// 
 /// After a set number of "jumps", the <c>JumpPrime</c> object will deactivate. It can be reactivated,
@@ -73,30 +73,23 @@ class JumpPrime
     /// </summary>
     private void _resetQueryCounter()
     {
-        // find greater of distance from the new value and set query limit
-        if ((_upperPrime - _mainNumber) > (_mainNumber - _lowerPrime))
-        {
-            _queryLimit = _upperPrime - _mainNumber;
-        }
-        else
-        {
-            _queryLimit = _mainNumber - _lowerPrime;
-        }
+        // set query limit to distance between primes
+        _queryLimit = _upperPrime - _lowerPrime;
 
         // reset the query count
         _queryCount = 0;
     }
 
     /// <summary>
-    /// jumpNumber "jumps" the value of the stored number, <c>_mainNumber</c>, by a specified
-    /// amount. After a set number of "jumps", the <c>JumpPrime</c> will deactive.
+    /// jumpNumber "jumps" the value of the stored number, <c>_mainNumber</c>, to a new specified
+    /// number. After a set number of "jumps", the <c>JumpPrime</c> will deactive.
     /// </summary>
     /// <param name="jumpValue">the value (positive or negative) to "jump" the stored
-    /// number, <c>_mainNumber</c>, by.</param>
-    private void _jumpNumber(int jumpValue)
+    /// number to.</param>
+    private void _jumpNumber(uint jumpValue)
     {
         // have to typecast
-        _mainNumber = (uint)(_mainNumber + jumpValue);
+        _mainNumber = jumpValue;
 
         _setPrimeLimits();
         _resetQueryCounter();
@@ -194,8 +187,7 @@ class JumpPrime
 
             if (_queryCount >= _queryLimit)
             {
-                int jumpValue = -2 * (int)(_mainNumber - _lowerPrime);
-                _jumpNumber(jumpValue);
+                _jumpNumber(_upperPrime + DefaultJumpValue);
             }
 
             return returnValue;
@@ -221,8 +213,7 @@ class JumpPrime
 
             if (_queryCount >= _queryLimit)
             {
-                int jumpValue = 2 * (int)(_upperPrime - _mainNumber);
-                _jumpNumber(jumpValue);
+                _jumpNumber(_lowerPrime - DefaultJumpValue);
             }
 
             return returnValue;
