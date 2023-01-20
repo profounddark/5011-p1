@@ -1,4 +1,10 @@
-using System.Diagnostics;
+// Andrew Asplund
+// CPSC 5011
+// Assignment P1
+// January 19, 2022
+
+// see license.md for copyright/license information
+
 
 /// <summary>
 /// The <c>JumpPrime</c> object holds a positive integer that must be at least 4 digits long.
