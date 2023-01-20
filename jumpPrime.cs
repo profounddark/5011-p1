@@ -1,6 +1,6 @@
 // Andrew Asplund
-// CPSC 5011
-// Assignment P1
+// CPSC 5011, Assignment P1
+// jumpPrime.cs, version 1.0
 // January 19, 2022
 
 // see license.md for copyright/license information

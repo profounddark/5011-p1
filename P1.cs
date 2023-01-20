@@ -1,6 +1,6 @@
 ﻿// Andrew Asplund
-// CPSC 5011
-// Assignment P1
+// CPSC 5011, Assignment P1
+// P1.cs, version 1.0
 // January 19, 2022
 
 // see license.md for copyright/license information
@@ -10,7 +10,7 @@ using System;
 
 /// <summary>
 /// MessageVerbosity tracks different levels of message and reporting
-/// verbosity used in the tests of this application.
+/// verbosity used in a few of the tests of this application.
 /// </summary>
 enum MessageVerbosity
 {
@@ -27,6 +27,7 @@ class P1
 
     static int TestCount = 5;
 
+    // fixed test parameters
     static uint TestValue = 2488;
     static uint TestUpPrime = 2503;
     static uint TestDownPrime = 2477;
@@ -67,7 +68,6 @@ class P1
     /// by the RandomJumpTest method.</param>
     public static void RandomJumpTest(MessageVerbosity verbosity = MessageVerbosity.Verbose)
     {
-
 
         JumpPrime newJumper = GetNewJumper();
 
@@ -168,25 +168,13 @@ class P1
     /// ReviveTest tests whether the Revive method of the <c>JumpPrime</c> class properly
     /// revives an inactive object.
     /// </summary>
-    /// <param name="verbosity">controls the number of messages transmitted to the console
-    /// by the ReviveTest method.</param>
-    public static void ReviveTest(MessageVerbosity verbosity = MessageVerbosity.Verbose)
+    public static void ReviveTest()
     {
         JumpPrime newJumper = GetNewJumper();
         int queryCounter = 0;
 
-        if (verbosity == MessageVerbosity.Verbose)
-        {
-            Console.WriteLine("Conducting JumpPrime Revive Test, verbose reporting:");
-            Console.WriteLine("Initial JumpPrime value: " + newJumper.GetCurrentValue());
-
-        }
-        // print limited verbosity message
-        else if ((verbosity == MessageVerbosity.Limited))
-        {
-            Console.WriteLine("Conducting JumpPrime Revive Test, limited reporting:");
-            Console.WriteLine("Initial JumpPrime value: " + newJumper.GetCurrentValue());
-        }
+        Console.WriteLine("Conducting JumpPrime Revive Test:");
+        Console.WriteLine("Initial JumpPrime value: " + newJumper.GetCurrentValue());
 
         while (newJumper.IsActive())
         {
@@ -202,28 +190,16 @@ class P1
                 queryCounter++;
             }
         }
-        if (verbosity == MessageVerbosity.Verbose)
-        {
-            Console.WriteLine("JumpPrime object is decativated: " + !newJumper.IsActive());
-            Console.WriteLine("JumpPrime object decativated after " + queryCounter + " queries.");
-        }
 
-        if (verbosity != MessageVerbosity.None)
-        {
-            Console.WriteLine("Reviving JumpPrime Object");
-        }
+        Console.WriteLine("JumpPrime object is decativated: " + !newJumper.IsActive());
+        Console.WriteLine("JumpPrime object decativated after " + queryCounter + " queries.");
+
+        Console.WriteLine("Reviving JumpPrime Object");
 
         newJumper.Revive();
 
-        if (verbosity != MessageVerbosity.None)
-        {
-            Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
-        }
-
-        if (verbosity == MessageVerbosity.Verbose)
-        {
-            Console.WriteLine("JumpPrime object stopped on value: " + newJumper.GetCurrentValue());
-        }
+        Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
+        Console.WriteLine("JumpPrime object stopped on value: " + newJumper.GetCurrentValue());
 
     }
 
@@ -231,40 +207,55 @@ class P1
     /// ReviveFailure tests whether or not the <c>JumpPrime</c> object properly disables itself
     /// when an attempt to Revive the object is done while the object is active.
     /// </summary>
-    /// <param name="verbosity">controls the number of messages transmitted to the console
-    /// by the ReviveTest method.</param>
-    public static void ReviveFailure(MessageVerbosity verbosity = MessageVerbosity.Verbose)
+    public static void ReviveFailure()
     {
         JumpPrime newJumper = GetNewJumper();
 
-        if (verbosity == MessageVerbosity.Verbose)
-        {
-            Console.WriteLine("Conducting JumpPrime Revive Failure Test, verbose reporting:");
+        Console.WriteLine("Conducting JumpPrime Revive Failure Test:");
 
-        }
-        // print limited verbosity message
-        else if (verbosity == MessageVerbosity.Limited)
-        {
-            Console.WriteLine("Conducting JumpPrime Revive Failure Test, limited reporting:");
-        }
-
-        if (verbosity != MessageVerbosity.None)
-        {
-            Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
-            Console.WriteLine("Attempting to Revive JumpPrime object.");
-        }
+        Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
+        Console.WriteLine("Attempting to Revive JumpPrime object.");
 
         newJumper.Revive();
 
-        if (verbosity != MessageVerbosity.None)
+        Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
+        Console.WriteLine("JumpPrime object is permanently deactivated: " + newJumper.IsDeactivated());
+
+    }
+
+    public static void ResetTest()
+    {
+        int queryCounter = 0;
+        JumpPrime newJumper = GetNewJumper();
+
+        Console.WriteLine("Conducting JumpPrime Revive Test:");
+        Console.WriteLine("Initial JumpPrime value: " + newJumper.GetCurrentValue());
+
+        while (newJumper.IsActive())
         {
-            Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
-        }
-        if (verbosity == MessageVerbosity.Verbose)
-        {
-            Console.WriteLine("JumpPrime object is permanently deactivated: " + newJumper.IsDeactivated());
+            {
+                if (queryCounter % 2 == 0)
+                {
+                    newJumper.up();
+                }
+                else
+                {
+                    newJumper.down();
+                }
+                queryCounter++;
+            }
         }
 
+        Console.WriteLine("JumpPrime object is decativated: " + !newJumper.IsActive());
+        Console.WriteLine("JumpPrime object decativated after " + queryCounter + " queries.");
+        Console.WriteLine("JumpPrime object deactivated on value: " + newJumper.GetCurrentValue());
+
+        Console.WriteLine("Resetting JumpPrime object.");
+
+        newJumper.Reset();
+
+        Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
+        Console.WriteLine("JumpPrime object current value: " + newJumper.GetCurrentValue());
 
 
     }
@@ -303,7 +294,9 @@ class P1
 
         ReviveFailure();
 
+        WriteSpacer();
 
+        ResetTest();
 
     }
 }
