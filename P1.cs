@@ -27,6 +27,10 @@ class P1
 
     static int TestCount = 5;
 
+    static uint TestValue = 2488;
+    static uint TestUpPrime = 2503;
+    static uint TestDownPrime = 2477;
+
 
     /// <summary>
     /// GetNewJumper creates a new <c>JumpPrime</c> object with an initial
@@ -39,6 +43,19 @@ class P1
         uint initValue = 1000 + (uint)(randomRoller.Next() % 9000);
         JumpPrime returnJumper = new JumpPrime(initValue);
         return returnJumper;
+    }
+
+    /// <summary>
+    /// FixedJumpTest tests whether the <c>JumpPrime</c> class functions correctly with the
+    /// test case provided in the assignment definition.
+    /// </summary>
+    public static void FixedJumpTest()
+    {
+        JumpPrime newJumper = new JumpPrime(TestValue);
+
+        Console.WriteLine("New JumpPrime object instanced with initial value of " + TestValue + ".");
+        Console.WriteLine("Testing up method, expecting value " + TestUpPrime + ", received: " + newJumper.up());
+        Console.WriteLine("Testing down method, expecting value " + TestDownPrime + ", received: " + newJumper.down());
     }
 
     /// <summary>
@@ -147,21 +164,27 @@ class P1
         }
     }
 
-    public static void ResetTest(MessageVerbosity verbosity = MessageVerbosity.Verbose)
+    /// <summary>
+    /// ReviveTest tests whether the Revive method of the <c>JumpPrime</c> class properly
+    /// revives an inactive object.
+    /// </summary>
+    /// <param name="verbosity">controls the number of messages transmitted to the console
+    /// by the ReviveTest method.</param>
+    public static void ReviveTest(MessageVerbosity verbosity = MessageVerbosity.Verbose)
     {
         JumpPrime newJumper = GetNewJumper();
         int queryCounter = 0;
 
         if (verbosity == MessageVerbosity.Verbose)
         {
-            Console.WriteLine("Conducting JumpPrime Reset Test, verbose reporting:");
+            Console.WriteLine("Conducting JumpPrime Revive Test, verbose reporting:");
             Console.WriteLine("Initial JumpPrime value: " + newJumper.GetCurrentValue());
 
         }
         // print limited verbosity message
         else if ((verbosity == MessageVerbosity.Limited))
         {
-            Console.WriteLine("Conducting JumpPrime Reset Test, limited reporting:");
+            Console.WriteLine("Conducting JumpPrime Revive Test, limited reporting:");
             Console.WriteLine("Initial JumpPrime value: " + newJumper.GetCurrentValue());
         }
 
@@ -205,6 +228,48 @@ class P1
     }
 
     /// <summary>
+    /// ReviveFailure tests whether or not the <c>JumpPrime</c> object properly disables itself
+    /// when an attempt to Revive the object is done while the object is active.
+    /// </summary>
+    /// <param name="verbosity">controls the number of messages transmitted to the console
+    /// by the ReviveTest method.</param>
+    public static void ReviveFailure(MessageVerbosity verbosity = MessageVerbosity.Verbose)
+    {
+        JumpPrime newJumper = GetNewJumper();
+
+        if (verbosity == MessageVerbosity.Verbose)
+        {
+            Console.WriteLine("Conducting JumpPrime Revive Failure Test, verbose reporting:");
+
+        }
+        // print limited verbosity message
+        else if (verbosity == MessageVerbosity.Limited)
+        {
+            Console.WriteLine("Conducting JumpPrime Revive Failure Test, limited reporting:");
+        }
+
+        if (verbosity != MessageVerbosity.None)
+        {
+            Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
+            Console.WriteLine("Attempting to Revive JumpPrime object.");
+        }
+
+        newJumper.Revive();
+
+        if (verbosity != MessageVerbosity.None)
+        {
+            Console.WriteLine("JumpPrime object is active: " + newJumper.IsActive());
+        }
+        if (verbosity == MessageVerbosity.Verbose)
+        {
+            Console.WriteLine("JumpPrime object is permanently deactivated: " + newJumper.IsDeactivated());
+        }
+
+
+
+    }
+
+    /// <summary>
     /// WriteSpacer prints a divider in the console output preceded and followed
     /// by newlines. Used for formatting.
     /// </summary>
@@ -219,6 +284,11 @@ class P1
     public static void Main(string[] args)
     {
 
+
+        FixedJumpTest();
+
+        WriteSpacer();
+
         RandomJumpTest(MessageVerbosity.Verbose);
 
         WriteSpacer();
@@ -227,7 +297,11 @@ class P1
 
         WriteSpacer();
 
-        ResetTest();
+        ReviveTest();
+
+        WriteSpacer();
+
+        ReviveFailure();
 
 
 
